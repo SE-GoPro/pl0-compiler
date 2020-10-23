@@ -32,11 +32,7 @@ TokenType getToken() {
   
   if (isalpha(c)) {
     do {
-      if (idx == MAX_IDENT_LEN) {
-        ident[idx] = '\0';
-        printf("ERROR: Name %s... is too long", ident);
-        return NONE;
-      }
+      if (idx == MAX_IDENT_LEN) continue;
       ident[idx++] = toupper(c);
     } while (isalnum(c = fGetCh()));
     ident[idx] = '\0';
