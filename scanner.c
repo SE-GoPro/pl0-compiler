@@ -12,9 +12,7 @@ int c;
 
 TokenType checkKeyword(char* str) {
   for (int i = 0; i < KEYWORDS_CNT; i++) {
-    if (strcmp(str, keywordMap[i].value) == 0) {
-      return keywordMap[i].token;
-    }
+    if (strcmp(str, keywordMap[i].value) == 0) return keywordMap[i].token;
   }
   return IDENT;
 }
@@ -24,11 +22,11 @@ int fGetCh() {
 }
 
 TokenType getToken() {
-  ident[0] = '\0';
-  number = 0;
   int idx = 0;
   int digitCnt = 0;
   int isComment = 0;
+  ident[0] = '\0';
+  number = 0;
 
   if (isspace(c)) while(isspace(c = fGetCh()));
   
@@ -117,12 +115,22 @@ TokenType getToken() {
     c = fGetCh();
     if (c == '=') { c = fGetCh(); return ASSIGN; }
     else {
-      printf("ERROR: Unkown operators ':'");
+      printf("ERROR: Unkown symbol ':'");
       return NONE;
     }
   }
 
-  if (c == '%') { c = fGetCh(); return PERCENT; };
+  if (c == '%') { c = fGetCh(); return PERCENT; }
+
+  if (!isspace(c) && !isalnum(c)
+    && c != '+' && c != '-' && c != '*' && c != '/'
+    && c != '>' && c != '<' && c != '='
+    && c != '(' && c != ')' && c != '[' && c != ']'
+    && c != '.' && c != ',' && c != ';'
+    && c != ':' && c != '%' && c != EOF) {
+      printf("ERROR: Unknown symbol '%c'", c);
+      return NONE;
+    }
 
   return NONE;
 }
